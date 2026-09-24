@@ -1,0 +1,572 @@
+/* Deloitte Flight Reservation System - Modern CSS */
+:root {
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #eef2ff;
+  --deloitte-green: #86bc25;
+  --deloitte-green-dark: #6e9d1e;
+  --dark-bg: #111827;
+  --dark-navbar: #1f2937;
+  --body-bg: #f3f4f6;
+  --card-bg: #ffffff;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
+  --danger-color: #ef4444;
+  --danger-hover: #dc2626;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--body-bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--dark-navbar);
+  color: #ffffff;
+  padding: 0.85rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-md);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.navbar-brand:hover {
+  text-decoration: none;
+}
+
+.brand-dot {
+  color: var(--deloitte-green);
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  list-style: none;
+}
+
+.navbar-nav a {
+  color: #d1d5db;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.navbar-nav a:hover, .navbar-nav a.active {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+}
+
+.nav-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: #e5e7eb;
+}
+
+.role-tag {
+  background-color: var(--deloitte-green);
+  color: #000000;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+/* Main Container */
+.main-content {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+/* Cards */
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-header {
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+}
+
+.btn-primary {
+  background-color: #6366f1;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: #4f46e5;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-success {
+  background-color: var(--deloitte-green);
+  color: #000000;
+  font-weight: 600;
+}
+
+.btn-success:hover {
+  background-color: var(--deloitte-green-dark);
+  color: #ffffff;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-hover);
+}
+
+.btn-secondary {
+  background-color: #4b5563;
+  color: #ffffff;
+}
+
+.btn-secondary:hover {
+  background-color: #374151;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.btn-outline:hover {
+  background-color: var(--body-bg);
+}
+
+.btn-sm {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn:disabled, .btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #374151;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.95rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.form-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+.field-error {
+  color: var(--danger-color);
+  font-size: 0.825rem;
+  margin-top: 0.3rem;
+  display: block;
+  font-weight: 500;
+}
+
+/* Alerts */
+.alert {
+  padding: 0.85rem 1.25rem;
+  border-radius: 6px;
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alert-success {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.alert-danger {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.alert-info {
+  background-color: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+/* Tables */
+.table-container {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f9fafb;
+  color: #4b5563;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.925rem;
+  vertical-align: middle;
+}
+
+.table tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.badge-success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.badge-info {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-flight {
+  background-color: #3b82f6;
+  color: #ffffff;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+/* Tabs */
+.tabs-nav {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 1.5rem;
+}
+
+.tab-link {
+  padding: 0.65rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tab-link:hover {
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+.tab-link.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+}
+
+/* Grid Layouts */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.auth-card-container {
+  max-width: 450px;
+  margin: 3rem auto;
+}
+
+/* Boarding Pass / Ticket Card */
+.ticket-card {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  position: relative;
+}
+
+.ticket-header {
+  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  color: #ffffff;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ticket-body {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+
+.ticket-info-block h4 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.ticket-info-block p {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.ticket-footer {
+  background-color: #f9fafb;
+  padding: 0.85rem 1.5rem;
+  border-top: 1px dashed var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Booking Confirmation Styling (Page 7) */
+.confirmation-container {
+  max-width: 650px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.confirmation-hero {
+  background-color: #10b981;
+  color: #ffffff;
+  padding: 2rem 1.5rem;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.confirmation-hero h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+.confirmation-card-content {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.feature-badges-row {
+  display: flex;
+  justify-content: space-around;
+  margin: 1.75rem 0;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-radius: var(--radius);
+}
+
+.feature-badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.feature-badge-item .icon {
+  font-size: 1.5rem;
+}
+
+.feature-badge-item .label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.feature-badge-item .sublabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.next-steps-list {
+  text-align: left;
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+  color: #4b5563;
+  line-height: 1.8;
+  font-size: 0.95rem;
+}
+
+/* Footer */
+.footer {
+  background-color: var(--dark-navbar);
+  color: #9ca3af;
+  padding: 1.25rem 2rem;
+  text-align: center;
+  font-size: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+}
+
+/* Print styles */
+@media print {
+  .navbar, .footer, .no-print, .btn {
+    display: none !important;
+  }
+  body, .main-content {
+    background-color: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .card, .ticket-card {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+  }
+}
