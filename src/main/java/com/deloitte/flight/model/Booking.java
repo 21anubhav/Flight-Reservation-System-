@@ -15,13 +15,20 @@ public class Booking implements Serializable {
     private Long flightId;
     private Long userId;
 
+    // Enterprise coupon & discount fields
+    private String couponCode;
+    private Double discountAmount = 0.0;
+
     // Additional display fields joined from Flight / User
     private String flightNumber;
+    private String airline = "Air India";
     private String source;
     private String destination;
     private String departureTime;
     private String arrivalTime;
     private String userEmail;
+    private String terminal = "T2";
+    private String gate = "G14";
 
     public Booking() {
     }
@@ -102,12 +109,36 @@ public class Booking implements Serializable {
         this.userId = userId;
     }
 
+    public String getCouponCode() {
+        return couponCode;
+    }
+
+    public void setCouponCode(String couponCode) {
+        this.couponCode = couponCode;
+    }
+
+    public Double getDiscountAmount() {
+        return discountAmount != null ? discountAmount : 0.0;
+    }
+
+    public void setDiscountAmount(Double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
     public String getFlightNumber() {
         return flightNumber;
     }
 
     public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
+    }
+
+    public String getAirline() {
+        return airline != null ? airline : "Air India";
+    }
+
+    public void setAirline(String airline) {
+        this.airline = airline;
     }
 
     public String getSource() {
@@ -148,6 +179,22 @@ public class Booking implements Serializable {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public String getTerminal() {
+        return terminal != null ? terminal : "T2";
+    }
+
+    public void setTerminal(String terminal) {
+        this.terminal = terminal;
+    }
+
+    public String getGate() {
+        return gate != null ? gate : "G14";
+    }
+
+    public void setGate(String gate) {
+        this.gate = gate;
     }
 
     public boolean isCancelled() {

@@ -30,6 +30,12 @@ public class AddFlightDto {
     @DecimalMin(value = "0.0", inclusive = false, message = "Price per seat must be greater than 0")
     private Double pricePerSeat;
 
+    // Enterprise additions
+    private String airline = "Air India";
+    private String flightStatus = "ON TIME";
+    private String terminal = "T2";
+    private String gate = "G14";
+
     public AddFlightDto() {
     }
 
@@ -87,5 +93,37 @@ public class AddFlightDto {
 
     public void setPricePerSeat(Double pricePerSeat) {
         this.pricePerSeat = pricePerSeat;
+    }
+
+    public String getAirline() {
+        return airline != null ? airline : "Air India";
+    }
+
+    public void setAirline(String airline) {
+        this.airline = airline;
+    }
+
+    public String getFlightStatus() {
+        return flightStatus != null ? flightStatus : "ON TIME";
+    }
+
+    public void setFlightStatus(String flightStatus) {
+        this.flightStatus = flightStatus;
+    }
+
+    public String getTerminal() {
+        return terminal != null ? terminal : "T2";
+    }
+
+    public void setTerminal(String terminal) {
+        this.terminal = terminal;
+    }
+
+    public String getGate() {
+        return gate != null ? gate : "G14";
+    }
+
+    public void setGate(String gate) {
+        this.gate = gate;
     }
 }

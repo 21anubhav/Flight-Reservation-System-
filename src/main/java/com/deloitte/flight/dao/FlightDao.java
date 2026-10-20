@@ -15,4 +15,5 @@ public interface FlightDao {
     List<Flight> findBySourceAndDestination(String source, String destination);
     boolean existsByFlightNumber(String flightNumber);
     List<FlightJourneySummaryDto> findBookedJourneysSummary(boolean upcoming, LocalDate currentDate);
+    void updateFlightOperationalStatus(Long flightId, String status, String gate, String terminal);
 }

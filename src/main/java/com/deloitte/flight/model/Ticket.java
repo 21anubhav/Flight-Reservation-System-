@@ -15,12 +15,19 @@ public class Ticket implements Serializable {
     private Long bookingId;
     private String status; // "CONFIRMED", "CANCELLED"
 
+    // Enterprise amenities
+    private String mealPreference = "Standard";
+    private String baggage = "15 kg";
+
     // Helper display fields
     private String flightNumber;
+    private String airline = "Air India";
     private String source;
     private String destination;
     private String departureTime;
     private String arrivalTime;
+    private String terminal = "T2";
+    private String gate = "G14";
 
     public Ticket() {
     }
@@ -101,12 +108,36 @@ public class Ticket implements Serializable {
         this.status = status;
     }
 
+    public String getMealPreference() {
+        return mealPreference != null ? mealPreference : "Standard";
+    }
+
+    public void setMealPreference(String mealPreference) {
+        this.mealPreference = mealPreference;
+    }
+
+    public String getBaggage() {
+        return baggage != null ? baggage : "15 kg";
+    }
+
+    public void setBaggage(String baggage) {
+        this.baggage = baggage;
+    }
+
     public String getFlightNumber() {
         return flightNumber;
     }
 
     public void setFlightNumber(String flightNumber) {
         this.flightNumber = flightNumber;
+    }
+
+    public String getAirline() {
+        return airline != null ? airline : "Air India";
+    }
+
+    public void setAirline(String airline) {
+        this.airline = airline;
     }
 
     public String getSource() {
@@ -139,6 +170,22 @@ public class Ticket implements Serializable {
 
     public void setArrivalTime(String arrivalTime) {
         this.arrivalTime = arrivalTime;
+    }
+
+    public String getTerminal() {
+        return terminal != null ? terminal : "T2";
+    }
+
+    public void setTerminal(String terminal) {
+        this.terminal = terminal;
+    }
+
+    public String getGate() {
+        return gate != null ? gate : "G14";
+    }
+
+    public void setGate(String gate) {
+        this.gate = gate;
     }
 
     public boolean isCancelled() {

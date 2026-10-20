@@ -1,5 +1,5 @@
 -- Deloitte Flight Reservation System Database Schema
--- Matches Page 4 ER Diagram exactly
+-- Enhanced Enterprise Edition
 
 DROP TABLE IF EXISTS `ticket`;
 DROP TABLE IF EXISTS `booking`;
@@ -14,7 +14,7 @@ CREATE TABLE `user` (
     `role` VARCHAR(50) NOT NULL
 );
 
--- Flights Table: Manages flight info, source/destination, seat capacity, prices.
+-- Flights Table: Manages flight info, source/destination, seat capacity, prices, airline, operational status.
 CREATE TABLE `flight` (
     `flight_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
     `flight_number` VARCHAR(50) NOT NULL UNIQUE,
@@ -23,10 +23,14 @@ CREATE TABLE `flight` (
     `departure_time` VARCHAR(50) NOT NULL,
     `arrival_time` VARCHAR(50) NOT NULL,
     `capacity` INT NOT NULL DEFAULT 20,
-    `price_per_seat` DOUBLE NOT NULL
+    `price_per_seat` DOUBLE NOT NULL,
+    `airline` VARCHAR(50) DEFAULT 'Air India',
+    `flight_status` VARCHAR(50) DEFAULT 'ON TIME',
+    `terminal` VARCHAR(20) DEFAULT 'T2',
+    `gate` VARCHAR(20) DEFAULT 'G14'
 );
 
--- Bookings Table: Tracks each booking transaction.
+-- Bookings Table: Tracks each booking transaction with coupon and discount calculations.
 CREATE TABLE `booking` (
     `booking_id` BIGINT AUTO_INCREMENT PRIMARY KEY,
     `booking_date` DATE NOT NULL,
@@ -36,11 +40,13 @@ CREATE TABLE `booking` (
     `status` VARCHAR(50) NOT NULL,
     `flight_id` BIGINT NOT NULL,
     `user_id` BIGINT NOT NULL,
+    `coupon_code` VARCHAR(50) DEFAULT NULL,
+    `discount_amount` DOUBLE DEFAULT 0.0,
     CONSTRAINT `fk_booking_flight` FOREIGN KEY (`flight_id`) REFERENCES `flight`(`flight_id`) ON DELETE CASCADE,
     CONSTRAINT `fk_booking_user` FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`) ON DELETE CASCADE
 );
 
--- Tickets Table: Holds data for each passenger's ticket.
+-- Tickets Table: Holds data for each passenger's ticket with seat number, meal, and baggage.
 CREATE TABLE `ticket` (
     `pnr_no` BIGINT AUTO_INCREMENT PRIMARY KEY,
     `passenger_name` VARCHAR(50) NOT NULL,
@@ -50,5 +56,7 @@ CREATE TABLE `ticket` (
     `seat_no` VARCHAR(20) NOT NULL,
     `booking_id` BIGINT NOT NULL,
     `status` VARCHAR(50) NOT NULL,
+    `meal_preference` VARCHAR(50) DEFAULT 'Standard',
+    `baggage` VARCHAR(50) DEFAULT '15 kg',
     CONSTRAINT `fk_ticket_booking` FOREIGN KEY (`booking_id`) REFERENCES `booking`(`booking_id`) ON DELETE CASCADE
 );

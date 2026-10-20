@@ -20,7 +20,10 @@ public class PassengerDto implements Serializable {
     @NotBlank(message = "Gender is required")
     private String gender; // Male, Female, Other
 
-    private String seatNo;
+    private String seatNo; // Selected from visual seat map (e.g. 1A, 2B)
+
+    private String mealPreference = "Standard"; // Vegetarian, Non-Vegetarian, Vegan, Jain
+    private String baggage = "15 kg";
 
     public PassengerDto() {
     }
@@ -60,6 +63,22 @@ public class PassengerDto implements Serializable {
     }
 
     public void setSeatNo(String seatNo) {
-        this.seatNo = seatNo;
+        this.seatNo = seatNo != null ? seatNo.trim().toUpperCase() : null;
+    }
+
+    public String getMealPreference() {
+        return mealPreference != null ? mealPreference : "Standard";
+    }
+
+    public void setMealPreference(String mealPreference) {
+        this.mealPreference = mealPreference;
+    }
+
+    public String getBaggage() {
+        return baggage != null ? baggage : "15 kg";
+    }
+
+    public void setBaggage(String baggage) {
+        this.baggage = baggage;
     }
 }

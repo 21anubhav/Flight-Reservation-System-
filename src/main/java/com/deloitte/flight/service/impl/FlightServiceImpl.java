@@ -42,6 +42,10 @@ public class FlightServiceImpl implements FlightService {
         flight.setArrivalTime(addFlightDto.getArrivalTime().trim());
         flight.setCapacity(addFlightDto.getCapacity() != null ? addFlightDto.getCapacity() : 20);
         flight.setPricePerSeat(addFlightDto.getPricePerSeat());
+        flight.setAirline(addFlightDto.getAirline() != null ? addFlightDto.getAirline() : "Air India");
+        flight.setFlightStatus(addFlightDto.getFlightStatus() != null ? addFlightDto.getFlightStatus() : "ON TIME");
+        flight.setTerminal(addFlightDto.getTerminal() != null ? addFlightDto.getTerminal() : "T2");
+        flight.setGate(addFlightDto.getGate() != null ? addFlightDto.getGate() : "G14");
 
         return flightDao.save(flight);
     }
@@ -89,5 +93,11 @@ public class FlightServiceImpl implements FlightService {
             currentDate = LocalDate.now();
         }
         return flightDao.findBookedJourneysSummary(upcoming, currentDate);
+    }
+
+    @Override
+    @Transactional
+    public void updateFlightOperationalStatus(Long flightId, String status, String gate, String terminal) {
+        flightDao.updateFlightOperationalStatus(flightId, status, gate, terminal);
     }
 }

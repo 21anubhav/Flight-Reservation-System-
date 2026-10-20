@@ -35,13 +35,21 @@ public class BookingDaoImpl implements BookingDao {
         booking.setFlightId(rs.getLong("flight_id"));
         booking.setUserId(rs.getLong("user_id"));
 
-        // Joined columns if available
+        try {
+            booking.setCouponCode(rs.getString("coupon_code"));
+            booking.setDiscountAmount(rs.getDouble("discount_amount"));
+        } catch (Exception ignored) {
+        }
+
         try {
             booking.setFlightNumber(rs.getString("flight_number"));
+            booking.setAirline(rs.getString("airline"));
             booking.setSource(rs.getString("source"));
             booking.setDestination(rs.getString("destination"));
             booking.setDepartureTime(rs.getString("departure_time"));
             booking.setArrivalTime(rs.getString("arrival_time"));
+            booking.setTerminal(rs.getString("terminal"));
+            booking.setGate(rs.getString("gate"));
         } catch (Exception ignored) {
         }
         try {
@@ -59,8 +67,8 @@ public class BookingDaoImpl implements BookingDao {
     @Override
     public Booking save(Booking booking) {
         if (booking.getBookingId() == null) {
-            String sql = "INSERT INTO booking (booking_date, journey_date, seats, total_price, status, flight_id, user_id) " +
-                         "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO booking (booking_date, journey_date, seats, total_price, status, flight_id, user_id, coupon_code, discount_amount) " +
+                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -71,6 +79,8 @@ public class BookingDaoImpl implements BookingDao {
                 ps.setString(5, booking.getStatus());
                 ps.setLong(6, booking.getFlightId());
                 ps.setLong(7, booking.getUserId());
+                ps.setString(8, booking.getCouponCode());
+                ps.setDouble(9, booking.getDiscountAmount() != null ? booking.getDiscountAmount() : 0.0);
                 return ps;
             }, keyHolder);
 
@@ -80,10 +90,11 @@ public class BookingDaoImpl implements BookingDao {
             }
         } else {
             String sql = "UPDATE booking SET booking_date = ?, journey_date = ?, seats = ?, total_price = ?, " +
-                         "status = ?, flight_id = ?, user_id = ? WHERE booking_id = ?";
+                         "status = ?, flight_id = ?, user_id = ?, coupon_code = ?, discount_amount = ? WHERE booking_id = ?";
             jdbcTemplate.update(sql, Date.valueOf(booking.getBookingDate()), Date.valueOf(booking.getJourneyDate()),
                     booking.getSeats(), booking.getTotalPrice(), booking.getStatus(),
-                    booking.getFlightId(), booking.getUserId(), booking.getBookingId());
+                    booking.getFlightId(), booking.getUserId(), booking.getCouponCode(),
+                    booking.getDiscountAmount(), booking.getBookingId());
         }
         return booking;
     }
@@ -91,7 +102,8 @@ public class BookingDaoImpl implements BookingDao {
     @Override
     public Optional<Booking> findById(Long bookingId) {
         String sql = "SELECT b.booking_id, b.booking_date, b.journey_date, b.seats, b.total_price, b.status, " +
-                     "b.flight_id, b.user_id, f.flight_number, f.source, f.destination, f.departure_time, f.arrival_time, u.email " +
+                     "b.flight_id, b.user_id, b.coupon_code, b.discount_amount, " +
+                     "f.flight_number, f.airline, f.source, f.destination, f.departure_time, f.arrival_time, f.terminal, f.gate, u.email " +
                      "FROM booking b " +
                      "JOIN flight f ON b.flight_id = f.flight_id " +
                      "JOIN user u ON b.user_id = u.user_id " +
@@ -107,7 +119,8 @@ public class BookingDaoImpl implements BookingDao {
     @Override
     public List<Booking> findByUserId(Long userId) {
         String sql = "SELECT b.booking_id, b.booking_date, b.journey_date, b.seats, b.total_price, b.status, " +
-                     "b.flight_id, b.user_id, f.flight_number, f.source, f.destination, f.departure_time, f.arrival_time, u.email " +
+                     "b.flight_id, b.user_id, b.coupon_code, b.discount_amount, " +
+                     "f.flight_number, f.airline, f.source, f.destination, f.departure_time, f.arrival_time, f.terminal, f.gate, u.email " +
                      "FROM booking b " +
                      "JOIN flight f ON b.flight_id = f.flight_id " +
                      "JOIN user u ON b.user_id = u.user_id " +
@@ -133,7 +146,8 @@ public class BookingDaoImpl implements BookingDao {
     @Override
     public List<Booking> findAll() {
         String sql = "SELECT b.booking_id, b.booking_date, b.journey_date, b.seats, b.total_price, b.status, " +
-                     "b.flight_id, b.user_id, f.flight_number, f.source, f.destination, f.departure_time, f.arrival_time, u.email " +
+                     "b.flight_id, b.user_id, b.coupon_code, b.discount_amount, " +
+                     "f.flight_number, f.airline, f.source, f.destination, f.departure_time, f.arrival_time, f.terminal, f.gate, u.email " +
                      "FROM booking b " +
                      "JOIN flight f ON b.flight_id = f.flight_id " +
                      "JOIN user u ON b.user_id = u.user_id " +

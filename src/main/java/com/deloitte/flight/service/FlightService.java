@@ -15,4 +15,5 @@ public interface FlightService {
     List<Flight> searchFlights(String source, String destination);
     boolean existsByFlightNumber(String flightNumber);
     List<FlightJourneySummaryDto> getBookedJourneysSummary(boolean upcoming, LocalDate currentDate);
+    void updateFlightOperationalStatus(Long flightId, String status, String gate, String terminal);
 }

@@ -34,6 +34,14 @@ public class FlightDaoImpl implements FlightDao {
         flight.setArrivalTime(rs.getString("arrival_time"));
         flight.setCapacity(rs.getInt("capacity"));
         flight.setPricePerSeat(rs.getDouble("price_per_seat"));
+
+        try {
+            flight.setAirline(rs.getString("airline"));
+            flight.setFlightStatus(rs.getString("flight_status"));
+            flight.setTerminal(rs.getString("terminal"));
+            flight.setGate(rs.getString("gate"));
+        } catch (Exception ignored) {
+        }
         return flight;
     };
 
@@ -45,8 +53,8 @@ public class FlightDaoImpl implements FlightDao {
     @Override
     public Flight save(Flight flight) {
         if (flight.getFlightId() == null) {
-            String sql = "INSERT INTO flight (flight_number, source, destination, departure_time, arrival_time, capacity, price_per_seat) " +
-                         "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO flight (flight_number, source, destination, departure_time, arrival_time, capacity, price_per_seat, airline, flight_status, terminal, gate) " +
+                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -57,6 +65,10 @@ public class FlightDaoImpl implements FlightDao {
                 ps.setString(5, flight.getArrivalTime());
                 ps.setInt(6, flight.getCapacity() != null ? flight.getCapacity() : 20);
                 ps.setDouble(7, flight.getPricePerSeat());
+                ps.setString(8, flight.getAirline());
+                ps.setString(9, flight.getFlightStatus());
+                ps.setString(10, flight.getTerminal());
+                ps.setString(11, flight.getGate());
                 return ps;
             }, keyHolder);
 
@@ -66,17 +78,18 @@ public class FlightDaoImpl implements FlightDao {
             }
         } else {
             String sql = "UPDATE flight SET flight_number = ?, source = ?, destination = ?, departure_time = ?, arrival_time = ?, " +
-                         "capacity = ?, price_per_seat = ? WHERE flight_id = ?";
+                         "capacity = ?, price_per_seat = ?, airline = ?, flight_status = ?, terminal = ?, gate = ? WHERE flight_id = ?";
             jdbcTemplate.update(sql, flight.getFlightNumber(), flight.getSource(), flight.getDestination(),
                     flight.getDepartureTime(), flight.getArrivalTime(), flight.getCapacity(),
-                    flight.getPricePerSeat(), flight.getFlightId());
+                    flight.getPricePerSeat(), flight.getAirline(), flight.getFlightStatus(),
+                    flight.getTerminal(), flight.getGate(), flight.getFlightId());
         }
         return flight;
     }
 
     @Override
     public Optional<Flight> findById(Long flightId) {
-        String sql = "SELECT flight_id, flight_number, source, destination, departure_time, arrival_time, capacity, price_per_seat " +
+        String sql = "SELECT flight_id, flight_number, source, destination, departure_time, arrival_time, capacity, price_per_seat, airline, flight_status, terminal, gate " +
                      "FROM flight WHERE flight_id = ?";
         try {
             Flight flight = jdbcTemplate.queryForObject(sql, flightRowMapper, flightId);
@@ -88,7 +101,7 @@ public class FlightDaoImpl implements FlightDao {
 
     @Override
     public Optional<Flight> findByFlightNumber(String flightNumber) {
-        String sql = "SELECT flight_id, flight_number, source, destination, departure_time, arrival_time, capacity, price_per_seat " +
+        String sql = "SELECT flight_id, flight_number, source, destination, departure_time, arrival_time, capacity, price_per_seat, airline, flight_status, terminal, gate " +
                      "FROM flight WHERE UPPER(flight_number) = UPPER(?)";
         try {
             Flight flight = jdbcTemplate.queryForObject(sql, flightRowMapper, flightNumber);
@@ -100,14 +113,14 @@ public class FlightDaoImpl implements FlightDao {
 
     @Override
     public List<Flight> findAll() {
-        String sql = "SELECT flight_id, flight_number, source, destination, departure_time, arrival_time, capacity, price_per_seat " +
+        String sql = "SELECT flight_id, flight_number, source, destination, departure_time, arrival_time, capacity, price_per_seat, airline, flight_status, terminal, gate " +
                      "FROM flight ORDER BY flight_id ASC";
         return jdbcTemplate.query(sql, flightRowMapper);
     }
 
     @Override
     public List<Flight> findBySourceAndDestination(String source, String destination) {
-        String sql = "SELECT flight_id, flight_number, source, destination, departure_time, arrival_time, capacity, price_per_seat " +
+        String sql = "SELECT flight_id, flight_number, source, destination, departure_time, arrival_time, capacity, price_per_seat, airline, flight_status, terminal, gate " +
                      "FROM flight WHERE LOWER(source) = LOWER(?) AND LOWER(destination) = LOWER(?) ORDER BY departure_time ASC";
         return jdbcTemplate.query(sql, flightRowMapper, source.trim(), destination.trim());
     }
@@ -121,7 +134,6 @@ public class FlightDaoImpl implements FlightDao {
 
     @Override
     public List<FlightJourneySummaryDto> findBookedJourneysSummary(boolean upcoming, LocalDate currentDate) {
-        // Only flights for which bookings are done should be displayed here
         String comparison = upcoming ? ">=" : "<";
         String order = upcoming ? "ASC" : "DESC";
 
@@ -161,5 +173,11 @@ public class FlightDaoImpl implements FlightDao {
             }
             return dto;
         }, Date.valueOf(currentDate));
+    }
+
+    @Override
+    public void updateFlightOperationalStatus(Long flightId, String status, String gate, String terminal) {
+        String sql = "UPDATE flight SET flight_status = ?, gate = ?, terminal = ? WHERE flight_id = ?";
+        jdbcTemplate.update(sql, status, gate, terminal, flightId);
     }
 }

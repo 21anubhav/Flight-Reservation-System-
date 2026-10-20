@@ -14,6 +14,12 @@ public class Flight implements Serializable {
     private Integer capacity = 20; // Default: 20 as specified
     private Double pricePerSeat;
 
+    // Enterprise additions
+    private String airline = "Air India";
+    private String flightStatus = "ON TIME";
+    private String terminal = "T2";
+    private String gate = "G14";
+
     public Flight() {
     }
 
@@ -93,11 +99,44 @@ public class Flight implements Serializable {
         this.pricePerSeat = pricePerSeat;
     }
 
+    public String getAirline() {
+        return airline != null ? airline : "Air India";
+    }
+
+    public void setAirline(String airline) {
+        this.airline = airline;
+    }
+
+    public String getFlightStatus() {
+        return flightStatus != null ? flightStatus : "ON TIME";
+    }
+
+    public void setFlightStatus(String flightStatus) {
+        this.flightStatus = flightStatus;
+    }
+
+    public String getTerminal() {
+        return terminal != null ? terminal : "T2";
+    }
+
+    public void setTerminal(String terminal) {
+        this.terminal = terminal;
+    }
+
+    public String getGate() {
+        return gate != null ? gate : "G14";
+    }
+
+    public void setGate(String gate) {
+        this.gate = gate;
+    }
+
     @Override
     public String toString() {
         return "Flight{" +
                 "flightId=" + flightId +
                 ", flightNumber='" + flightNumber + '\'' +
+                ", airline='" + airline + '\'' +
                 ", source='" + source + '\'' +
                 ", destination='" + destination + '\'' +
                 ", departureTime='" + departureTime + '\'' +

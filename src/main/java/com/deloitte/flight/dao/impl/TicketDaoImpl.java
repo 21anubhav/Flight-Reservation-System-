@@ -3,6 +3,7 @@ package com.deloitte.flight.dao.impl;
 import com.deloitte.flight.dao.TicketDao;
 import com.deloitte.flight.model.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TicketDaoImpl implements TicketDao {
@@ -33,11 +35,20 @@ public class TicketDaoImpl implements TicketDao {
         ticket.setStatus(rs.getString("status"));
 
         try {
+            ticket.setMealPreference(rs.getString("meal_preference"));
+            ticket.setBaggage(rs.getString("baggage"));
+        } catch (Exception ignored) {
+        }
+
+        try {
             ticket.setFlightNumber(rs.getString("flight_number"));
+            ticket.setAirline(rs.getString("airline"));
             ticket.setSource(rs.getString("source"));
             ticket.setDestination(rs.getString("destination"));
             ticket.setDepartureTime(rs.getString("departure_time"));
             ticket.setArrivalTime(rs.getString("arrival_time"));
+            ticket.setTerminal(rs.getString("terminal"));
+            ticket.setGate(rs.getString("gate"));
         } catch (Exception ignored) {
         }
         return ticket;
@@ -51,8 +62,8 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public Ticket save(Ticket ticket) {
         if (ticket.getPnrNo() == null) {
-            String sql = "INSERT INTO ticket (passenger_name, gender, age, journey_date, seat_no, booking_id, status) " +
-                         "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO ticket (passenger_name, gender, age, journey_date, seat_no, booking_id, status, meal_preference, baggage) " +
+                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -63,6 +74,8 @@ public class TicketDaoImpl implements TicketDao {
                 ps.setString(5, ticket.getSeatNo());
                 ps.setLong(6, ticket.getBookingId());
                 ps.setString(7, ticket.getStatus());
+                ps.setString(8, ticket.getMealPreference());
+                ps.setString(9, ticket.getBaggage());
                 return ps;
             }, keyHolder);
 
@@ -72,10 +85,11 @@ public class TicketDaoImpl implements TicketDao {
             }
         } else {
             String sql = "UPDATE ticket SET passenger_name = ?, gender = ?, age = ?, journey_date = ?, " +
-                         "seat_no = ?, booking_id = ?, status = ? WHERE pnr_no = ?";
+                         "seat_no = ?, booking_id = ?, status = ?, meal_preference = ?, baggage = ? WHERE pnr_no = ?";
             jdbcTemplate.update(sql, ticket.getPassengerName(), ticket.getGender(), ticket.getAge(),
                     Date.valueOf(ticket.getJourneyDate()), ticket.getSeatNo(),
-                    ticket.getBookingId(), ticket.getStatus(), ticket.getPnrNo());
+                    ticket.getBookingId(), ticket.getStatus(), ticket.getMealPreference(),
+                    ticket.getBaggage(), ticket.getPnrNo());
         }
         return ticket;
     }
@@ -90,13 +104,31 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public List<Ticket> findByBookingId(Long bookingId) {
         String sql = "SELECT t.pnr_no, t.passenger_name, t.gender, t.age, t.journey_date, t.seat_no, t.booking_id, t.status, " +
-                     "f.flight_number, f.source, f.destination, f.departure_time, f.arrival_time " +
+                     "t.meal_preference, t.baggage, " +
+                     "f.flight_number, f.airline, f.source, f.destination, f.departure_time, f.arrival_time, f.terminal, f.gate " +
                      "FROM ticket t " +
                      "JOIN booking b ON t.booking_id = b.booking_id " +
                      "JOIN flight f ON b.flight_id = f.flight_id " +
                      "WHERE t.booking_id = ? " +
                      "ORDER BY t.pnr_no ASC";
         return jdbcTemplate.query(sql, ticketRowMapper, bookingId);
+    }
+
+    @Override
+    public Optional<Ticket> findByPnrNo(Long pnrNo) {
+        String sql = "SELECT t.pnr_no, t.passenger_name, t.gender, t.age, t.journey_date, t.seat_no, t.booking_id, t.status, " +
+                     "t.meal_preference, t.baggage, " +
+                     "f.flight_number, f.airline, f.source, f.destination, f.departure_time, f.arrival_time, f.terminal, f.gate " +
+                     "FROM ticket t " +
+                     "JOIN booking b ON t.booking_id = b.booking_id " +
+                     "JOIN flight f ON b.flight_id = f.flight_id " +
+                     "WHERE t.pnr_no = ?";
+        try {
+            Ticket ticket = jdbcTemplate.queryForObject(sql, ticketRowMapper, pnrNo);
+            return Optional.ofNullable(ticket);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
